@@ -19,6 +19,9 @@ So first, we will learn about PWM and come back later.
 
 ### Controlling servo with PWM
 #### Connections
+> WARNING: DO NOT MOVE THE SERVO MOTOR SHAFT BY HAND!\
+It may burnt your board when connected.
+
 Connect the servo motor to the correct pins of your mainboard
 
 - Orange PWM wire of servo connect to the pin you chose (PC7(TIM3\_CH2) for the example above)
@@ -40,6 +43,8 @@ For servos with White, Red, Black wires, their color code is:
 </details>
 
 ![](images/Servo-wires.png)![](images/GPIO_pins.png)
+After connecting, feel free to try to control the motor by generating PWM with different on-times.\
+It is may be helpful to write a function to help control the motor by mapping desired angle -> on-time.
 
 **ClassWork 3**
 

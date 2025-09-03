@@ -44,7 +44,7 @@ For servos with White, Red, Black wires, their color code is:
 
 ![](images/Servo-wires.png)![](images/GPIO_pins.png)
 After connecting, feel free to try to control the motor by generating PWM with different on-times.\
-It is may be helpful to write a function to help control the motor by mapping desired angle -> on-time.
+It may be helpful to write a function to help control the motor by mapping desired angle -> on-time.
 
 **ClassWork 3**
 

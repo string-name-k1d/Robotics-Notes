@@ -168,6 +168,6 @@ while (1) {
 ...
 ```
 
-### Classwork 3
+Now test your PWM with a servo motor!
 
-> [Classwork 3](03-classwork.md#classwork-3)
+[Servo](PWM_Servo.md#connection)

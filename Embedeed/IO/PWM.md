@@ -12,7 +12,7 @@ There are 2 main components when generating a PWM
 - On-time (V HIGH time)
   - or Duty Cycle (On-time / T)
 
-In the following parts, we will try to generate a PWM with 50Hz frequency and 2ms on-time.
+In the following parts, we will try to generate a PWM with 50Hz frequency and 1ms on-time.
 
 ### Frequency: MCU Clock & Timer 
 The MCU Clock is what determines how fast a MCU (/CPU) can operate.
@@ -20,7 +20,7 @@ The MCU Clock is what determines how fast a MCU (/CPU) can operate.
 For our boards, they are usually at 84MHz (84 000 000 instructions in a second!).\
 But for our purpose, we only need 50Hz.
 
-So we will be using **timers** inside the board to generate a different frequency.
+So we will be using **timers** inside the board to generate a different frequency from the MCU clock.
 *Note* a total of 8 timers (TIM0 - TIM8) are available, each can output different frequencies.
 
 #### TIM: PSC & ARR
@@ -33,7 +33,8 @@ to slow down the frequency.
 
 - PSC: how many **MCU Clock ticks** to wait before increasing **auto-reloaded counter** (AR counter from now on cus I'm lazy)\
   i.e. if PSC = 1, output is send every (PSC + 1) MCU Clock cycles: 1st MCU clk tick wait, 2nd tick inc
-- ARR: max value of auto-reloaded counter\
+  
+- ARR: max value of AR counter\
   i.e. if ARR = 1, *counter overflow* triggers when *AR counter* **exceeds (>)** ARR value, that is every (ARR + 1) *AR counter* counts\
   and it would be **reset to 0** after overflow.
 
@@ -47,14 +48,16 @@ $Freqency\:Output = \frac{Frequency \: of\:clock}{(Prescaler\:Value+1) \cdot (Au
 
 With the frequency set, we would then make use of the *auto-reloaded counter* value to generate pwm with the desired on-time.
 
-*Note*: We usually prefer a larger ARR value and smaller PSC value since it provides better *resolution* - meaning it can generate more "finely divided" on-time values (since more possible counter values). ~~though higher PSC theoretically have lower power consumption, it doesn't really matter~~
+> *Note*: We usually prefer a larger ARR value and smaller PSC value since it provides better *resolution* - meaning it can generate more "finely divided" on-time values (since more possible counter values). ~~though higher PSC theoretically have lower power consumption, it doesn't really matter~~
 
-*Extra*: the TIM actually provides much more functionality than just generating PWMs, feel free to explore its parameters and what they do. (NOT NEEDED IN RDC rly)
+> *Extra*: the TIM actually provides much more functionality than just generating PWMs, feel free to explore its parameters and what they do. (NOT NEEDED IN RDC rly)\
+[stm32 Timers wiki](https://wiki.st.com/stm32mcu/wiki/Getting_started_with_TIM)
 
 **ClassWork 1**
 - [ ] find 3 pairs of PSC and ARR values to generate a 50Hz output frequency from our board (84GHz).
 
-Note that PSC & ARR values must be integers. You may find prime factorization to be useful.
+> Note that PSC & ARR values must be integers.
+> You may find prime factorization to be useful.
 
 ### On-time: Channels & CRR
 We control the on-time by choosing a suitable CRR value for the ARR we have chosen.
@@ -66,7 +69,8 @@ How does it work? A HIGH signal is output if the *CCR* value is greater than val
 So $duty cycle = \frac{on-time}{T} = \frac{CCR}{ARR+1}$
 
 **ClassWork 2**
-- [ ] find the CRR value for our 50Hz PWM to have 2ms on-time.
+- [ ] find the CRR value for your 50Hz PWM to have 1ms on-time\
+      (just choose 1 set of CCR and ARR values from your classwork 1)
 
 ## PWM set up in stm32
 
@@ -170,4 +174,4 @@ while (1) {
 
 Now test your PWM with a servo motor!
 
-[Servo](PWM_Servo.md#connection)
+[Servo Motor](PWM_Servo.md#connections)

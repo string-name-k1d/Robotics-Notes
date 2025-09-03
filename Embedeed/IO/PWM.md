@@ -21,7 +21,7 @@ For our boards, they are usually at 84MHz (84 000 000 instructions in a second!)
 But for our purpose, we only need 50Hz.
 
 So we will be using **timers** inside the board to generate a different frequency from the MCU clock.
-*Note* a total of 8 timers (TIM0 - TIM8) are available, each can output different frequencies.
+*Note* a total of 8 timers (`TIM0` - `TIM8`) are available, each can output different frequencies.
 
 #### TIM: PSC & ARR
 Each TIMx has some custom parameters that we could set, and we will be using
@@ -31,11 +31,11 @@ uint16_t ARR; // Auto Reload Register
 ```
 to slow down the frequency.
 
-- PSC: how many **MCU Clock ticks** to wait before increasing **auto-reloaded counter** (AR counter from now on cus I'm lazy)\
+- `PSC`: how many **MCU Clock ticks** to wait before increasing **auto-reloaded counter** (`AR counter` from now on cus I'm lazy)\
   i.e. if PSC = 1, output is send every (PSC + 1) MCU Clock cycles: 1st MCU clk tick wait, 2nd tick inc
   
-- ARR: max value of AR counter\
-  i.e. if ARR = 1, *counter overflow* triggers when *AR counter* **exceeds (>)** ARR value, that is every (ARR + 1) *AR counter* counts\
+- `ARR`: max value of `AR counter`\
+  i.e. if ARR = 1, *counter overflow* triggers when `AR counter` **exceeds (>)** `ARR` value, that is every `ARR + 1` `AR counter` counts\
   and it would be **reset to 0** after overflow.
 
 >Mainly refer to those items in red
@@ -44,39 +44,39 @@ to slow down the frequency.
 
 Therefore the output frequency would be:
 
-$Freqency\:Output = \frac{Frequency \: of\:clock}{(Prescaler\:Value+1) \cdot (Auto-reloaded\: counter+1)}$
+$Freqency Output = \frac{Frequency \: of\:clock}{(Prescaler\:Value+1) \cdot (Auto-reloaded\: counter+1)}$
 
-With the frequency set, we would then make use of the *auto-reloaded counter* value to generate pwm with the desired on-time.
+With the frequency set, we would then make use of the `AR counter` value to generate pwm with the desired on-time.
 
-> *Note*: We usually prefer a larger ARR value and smaller PSC value since it provides better *resolution* - meaning it can generate more "finely divided" on-time values (since more possible counter values). ~~though higher PSC theoretically have lower power consumption, it doesn't really matter~~
+> *Note*: We usually prefer a larger `ARR` value and smaller `PSC` value since it provides better *resolution* - meaning it can generate more "finely divided" on-time values (since more possible counter values). ~~though higher PSC theoretically have lower power consumption, it doesn't really matter~~
 
 > *Extra*: the TIM actually provides much more functionality than just generating PWMs, feel free to explore its parameters and what they do. (NOT NEEDED IN RDC rly)\
 [stm32 Timers wiki](https://wiki.st.com/stm32mcu/wiki/Getting_started_with_TIM)
 
 **ClassWork 1**
-- [ ] find 3 pairs of PSC and ARR values to generate a 50Hz output frequency from our board (84GHz).
+- [ ] find 3 pairs of `PSC` and `ARR` values to generate a 50Hz output frequency from our board (84GHz).
 
 > Note that PSC & ARR values must be integers.
 > You may find prime factorization to be useful.
 
-### On-time: Channels & CRR
-We control the on-time by choosing a suitable CRR value for the ARR we have chosen.
+### On-time: Channels & CCR
+We control the on-time by choosing a suitable capture/compare register `CCR` value for the `ARR` we have chosen.
 
-For each TIMx, there are 4 channels CHx with their respective CRRx values, allowing us to generate PWMs with different on-times of the **same frequency**.
+For each TIMx, there are 4 channels `CHx` with their respective `CCRx` values, allowing us to generate PWMs with different on-times of the **same frequency**.
 
-How does it work? A HIGH signal is output if the *CCR* value is greater than value in the *AR counter*, and LOW other wise.
+How does it work? A HIGH signal is output if the `CCR` value is greater than value in the `AR counter`, and LOW other wise.
 
 So $duty cycle = \frac{on-time}{T} = \frac{CCR}{ARR+1}$
 
 **ClassWork 2**
-- [ ] find the CRR value for your 50Hz PWM to have 1ms on-time\
+- [ ] find the `CCR` value for your 50Hz PWM to have 1ms on-time\
       (just choose 1 set of CCR and ARR values from your classwork 1)
 
 ## PWM set up in stm32
 
 ### Define the PWM features in the IDE
 
-> There are many pins on the board. You need to find out which pin your TIMx_CHx is connected to.
+> There are many pins on the board. You need to find out which pin your `TIMx_CHx` is connected to.
 
 There are 4 steps in setting up the PWM output channel and the pin to use.
 

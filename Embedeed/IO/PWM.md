@@ -31,10 +31,15 @@ uint16_t ARR; // Auto Reload Register
 ```
 to slow down the frequency.
 
+- PSC: how many **MCU Clock cycles** to wait before increasing **auto-reloaded counter**\
+  i.e. PSC = 1, output is send every (PSC + 1) MCU Clock cycles: 1st MCU clk cycle wait, 2nd MCU cycle output
+- ARR: max value of auto-reloaded counter\
+  i.e. ARR = 1, *counter overflow* triggered when *auto-reloaded counter* **exceeds** ARR value, that is every (ARR + 1) *auto-reloaded counter* counts\
+  and it would be **reset to 0** after overflow.
+
 >Mainly refer to those items in red
 >
 ![](https://imgur.com/YF8xjhF.png)
-
 
 **ClassWork**
 - [ ] find 3 pairs of PSC and ARR values to generate a 50Hz output frequency from our board (84GHz).

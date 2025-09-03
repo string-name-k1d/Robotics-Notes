@@ -14,6 +14,7 @@ To control a servo motor to move to a specific angle, we need to use send a PWM 
 So first, we will learn about PWM and come back later.
 
 [PWM](PWM.md)
+
 ---
 
 ### Controlling servo with PWM
